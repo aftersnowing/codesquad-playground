@@ -1,6 +1,8 @@
-##`arr.forEach(callback[, thisArg]);`
+arr.forEach(callback[, thisArg]);
+====
+
 ----
-##매개변수
+##매개변수섹션
 
 >### callback
 각 요소에 대해 실행할 함수. 다음 세 가지 인수를 받습니다.
@@ -18,7 +20,7 @@ forEach()를 호출한 배열.
 callback을 실행할 때 this로 사용할 값.
 
 ----
-##반환 값 
+##반환 값섹션 
 undefined.
 
 #설명
