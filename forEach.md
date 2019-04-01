@@ -2,7 +2,7 @@ arr.forEach(callback[, thisArg]);
 ====
 
 ----
-##매개변수섹션
+## 매개변수
 
 >### callback
 각 요소에 대해 실행할 함수. 다음 세 가지 인수를 받습니다.
@@ -20,10 +20,10 @@ forEach()를 호출한 배열.
 callback을 실행할 때 this로 사용할 값.
 
 ----
-##반환 값섹션 
+## 반환 값
 undefined.
 
-#설명
+# 설명
 
 forEach()는 주어진 callback을 배열에 있는 각 요소에 대해 오름차순으로 한 번씩 실행합니다. 삭제했거나 초기화하지 않은 인덱스 속성에 대해서는 실행하지 않습니다. (예: 희소 배열)
 
@@ -41,9 +41,9 @@ forEach()는 각 배열 요소에 대해 한 번씩 callback 함수를 실행합
 
 forEach()는 배열을 변형하지 않습니다. 그러나 callback이 변형할 수는 있습니다.
 
-#예제
+# 예제
 ----
-##1.for 반복문을 forEach로 바꾸기
+## 1.for 반복문을 forEach로 바꾸기
 
     const items = ['item1', 'item2', 'item3'];`
     const copy = [];
@@ -58,7 +58,7 @@ forEach()는 배열을 변형하지 않습니다. 그러나 callback이 변형�
     copy.push(item);
     });
 ----
-##2.배열 콘텐츠 출력
+## 2.배열 콘텐츠 출력
 
     function logArrayElements(element, index, array) {
       console.log('a[' + index + '] = ' + element);
