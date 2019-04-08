@@ -71,3 +71,8 @@ forEach()는 배열을 변형하지 않습니다. 그러나 callback이 변형�
     // a[0] = 2
     // a[1] = 5
     // a[3] = 9
+
+
+
+### 출처
+- forEach MDN 문서 (https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
