@@ -26,10 +26,10 @@ const data = {
 }
 function pickNumData(obj) {
     let result = [];
-    (function closure(obj) {
+    (function closureResultArr(obj) {
 		let keyValueArrs = Object.entries(obj);
         keyValueArrs.forEach((el) => {
-			if (typeof el[1] === 'object') closure(el[1]);
+			if (typeof el[1] === 'object') closureResultArr(el[1]);
             if (typeof el[1] === 'number') result.push(el[0]);
 		}) 
     })(obj);
@@ -125,10 +125,10 @@ var jsonData = [{
 
 function pickNameDataWithSk(arr) {
 	let result = [];
-	(function add(arr) {
+	(function closureResultArr(arr) {
 		arr.forEach((el) => {
 			if (el['type'] === 'sk') result.push(el['name'])
-			if (el['childnode'].length !== 0) closure(el['childnode']);
+			if (el['childnode'].length !== 0) closureResultArr(el['childnode']);
 		});
 	})(arr);
 	return result;
