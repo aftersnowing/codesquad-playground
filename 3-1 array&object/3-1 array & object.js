@@ -125,7 +125,7 @@ var jsonData = [{
 
 function pickNameDataWithSk(arr) {
 	let result = [];
-	(function closure(arr) {
+	(function add(arr) {
 		arr.forEach((el) => {
 			if (el['type'] === 'sk') result.push(el['name'])
 			if (el['childnode'].length !== 0) closure(el['childnode']);
@@ -136,3 +136,26 @@ function pickNameDataWithSk(arr) {
 // console.log(pickNameDataWithSk(jsonData));
 //type이 sk인, name으로 구성된 배열만 출력해본다.
 //["Yong", "hary", "solvin", "hani", "chulsu"]
+
+
+
+function myReduce(arr, callback, initial) {
+	let acc;
+	let index;
+	initial === undefined ? (acc = arr[0], index = 1) : (acc = initial, index = 0)
+	for (i = 1; i < arr.length; i++, index++) {
+		acc = callback(acc, arr[i], index, arr);
+	}
+	return acc;
+}
+
+const arr = [3, 6, 1, 4, 5, 2, 9, 8];
+let testCase1 = myReduce(arr, (acc, cur) => acc + cur);
+let testCase2 = myReduce(arr, (acc, cur) => acc > cur ? acc : cur);
+let testCase3 = myReduce(arr, (acc, cur, i, arr) => {
+	console.log('acc :', acc, 'cur :', cur,'indxe :', i,'array :', arr)
+},[]);
+// console.log(testCase1);
+// console.log(testCase2);
+// console.log(testCase3);
+// reduce 만들기.
