@@ -4,7 +4,7 @@ const data = {
         "title": "Sample Konfabulator Widget",
         "name": "main_window",
         "width": 500,
-        "height": 500,
+        "height": 500
     },
     "image": { 
         "src": "Images/Sun.png",
@@ -27,17 +27,11 @@ const data = {
 function pickNumData(obj) {
     let result = [];
     (function closure(obj) {
-        let keysArr = Object.keys(obj);
-        for (key of keysArr) {
-            let val = obj[key];
-            (function numFinder(val) {
-                if (typeof val === 'object') {
-                    return closure(val);
-                } else if (typeof val === 'number') {
-                    result.push(key);
-                }
-            })(val);
-        }
+		let keyValueArrs = Object.entries(obj);
+        keyValueArrs.forEach((el) => {
+			if (typeof el[1] === 'object') closure(el[1]);
+            if (typeof el[1] === 'number') result.push(el[0]);
+		}) 
     })(obj);
     return result;
 }
