@@ -34,19 +34,21 @@ function fibonacciRecursion(n) {
 // console.log(fibonacciRecursion(3));
 // console.log(fibonacciRecursion(4));
 // console.log(fibonacciRecursion(5));
+// console.time('')
 // console.log(fibonacciRecursion(40));
+// console.timeEnd('')
 // recursion을 사용하여 구현;
 
 
 function fibonacciMemoization(n) {
     let d = [0, 1];
-    return (function closureFunc() {
+    return (function memoArrClosure(n) {
         if (d[n] !== undefined) {
             return d[n];
         }
-        d[n] = fibonacciMemoization(n-1) + fibonacciMemoization(n-2) 
+        d[n] = memoArrClosure(n-1) + memoArrClosure(n-2) 
         return d[n];
-    })();
+    })(n);
 }
 // console.log(fibonacciMemoization(0));
 // console.log(fibonacciMemoization(1));
@@ -54,7 +56,9 @@ function fibonacciMemoization(n) {
 // console.log(fibonacciMemoization(3));
 // console.log(fibonacciMemoization(4));
 // console.log(fibonacciMemoization(5));
+// console.time('dp')
 // console.log(fibonacciMemoization(40));
+// console.timeEnd('dp')
 // recursion을 사용한 코드에 memoization을 추가하고 closure형태로 만듬
 
 
