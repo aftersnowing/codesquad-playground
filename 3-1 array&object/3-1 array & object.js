@@ -124,16 +124,14 @@ var jsonData = [{
 }]
 
 function pickNameDataWithSk(arr) {
-    let result = [];
-    (function closure(arr) {
-        for (obj of arr) {
-            (function nameFinder(obj) {
-                if (obj['type'] === 'sk') result.push(obj['name'])
-                if (obj['childnode'].length !== 0) return closure(obj['childnode']);
-            })(obj);
-        }
-    })(arr);
-    return result;
+	let result = [];
+	(function closure(arr) {
+		arr.forEach((el) => {
+			if (el['type'] === 'sk') result.push(el['name'])
+			if (el['childnode'].length !== 0) closure(el['childnode']);
+		});
+	})(arr);
+	return result;
 }
 // console.log(pickNameDataWithSk(jsonData));
 //type이 sk인, name으로 구성된 배열만 출력해본다.
