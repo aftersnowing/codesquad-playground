@@ -5,7 +5,7 @@ function pickNumData(obj) {
     (function closureResultArr(obj) {
 		let keyValueArrs = Object.entries(obj);
         keyValueArrs.forEach((el) => {
-			if (typeof el[1] === 'object') closureResultArr(el[1]);
+			if (typeof el[1] === 'object' && !Array.isArray(el[1])) closureResultArr(el[1]);
             if (typeof el[1] === 'number') result.push(el[0]);
 		}) 
     })(obj);
@@ -49,10 +49,12 @@ const arr = [3, 6, 1, 4, 5, 2, 9, 8];
 let testCase1 = myReduce(arr, (acc, cur) => acc + cur);
 let testCase2 = myReduce(arr, (acc, cur) => acc > cur ? acc : cur);
 let testCase3 = myReduce(arr, (acc, cur, i, arr) => {
-	console.log('acc :', acc, 'cur :', cur,'indxe :', i,'array :', arr)
-},[]);
+	acc.push({ 'cur': cur, 'index': i, 'arr': arr })
+	return acc
+}, []);
+let testCase4 = myReduce(arr, (acc, cur) => acc + cur, '');
 // console.log(testCase1);
 // console.log(testCase2);
 // console.log(testCase3);
+// console.log(testCase4);
 // reduce 만들기.
-le
