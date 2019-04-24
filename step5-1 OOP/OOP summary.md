@@ -361,7 +361,6 @@ console.log(o.ultraProp);
 결과
 =>true
 ~~~
-
 생성자 함수 Sub를 통해서 만들어진 객체 o가 Ultra의 프로퍼티 ultraProp에 접근 가능한 것은 prototype 체인으로 Sub와 Ultra가 연결되어 있기 때문이다. 내부적으로는 아래와 같은 일이 일어난다.
 
 1. 객체 o에서 ultraProp를 찾는다.
@@ -373,6 +372,36 @@ prototype은 객체와 객체를 연결하는 체인의 역할을 하는 것이�
 
 > Super.prototype = Ultra.prototype으로 하면 안된다. 이렇게 하면 Super.prototype의 값을 변경하면 그것이 Ultra.prototype도 변경하기 때문이다. Super.prototype = new Ultra();는 Ultra.prototype의 원형으로 하는 객체가 생성되기 때문에 new Ultra()를 통해서 만들어진 객체에 변화가 생겨도 Ultra.prototype의 객체에는 영향을 주지 않는다.
 
+
+
+~~~javascript
+function A () {}
+
+function B () {}
+
+function C () {}
+
+B.prototype.__proto__ = new A()
+C.prototype.__proto__ = new B()
+
+A.prototype.testA = function() {console.log("A")}
+B.prototype.testB = function() {console.log("B")}
+C.prototype.testC = function() {console.log("C")}
+
+let c = new C();
+
+c.testC()
+c.testB()
+c.testA()
+
+결과
+=>
+C
+B
+A
+
+~~~
+B의 prototype object 와 C의 prototype object를 같이 상속시켜줄 수 있다. 즉 직전의 예제에서는 Super와 Sub의 prototype object는 체인에 연결되어 있지 않지만 위의 예제에서는 Object prototype object를 참조하는 __proto__를 상위 함수의 인스턴스와 연결해줌으로써 마치 전기회로가 직렬 연결되듯이 프로토체인이 형성된다.
 
 
 ### 표준 내장 객체(Standard Built-in Object)
