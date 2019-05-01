@@ -147,19 +147,34 @@ Todos.prototype.storeHistoryRecord = function (todosObj, appWord, ...parameter) 
     }
 };
 
-Todos.prototype.undo = function () {
-    if (this.isValidPointerLocation('undo')) {
-        const userinputArr = this.userInputRecord[this.recordPointer];
-        const todosObj = this.todosRecord[this.recordPointer];
+Todos.prototype.setDefaultVal = function (undoWord) {
+    let defaultVal = {
+        adjNum: 0,
+        add: 'add',
+        delete: 'delete',
+    }
+    if (undoWord === 'redo') {
+        defaultVal.adjNum = 1;
+        defaultVal.add = 'delete';
+        defaultVal.delete = 'add';
+    }
+    return defaultVal;
+}
+
+Todos.prototype.restoreTodos = function(undoWord) {
+    const defaultVal = this.setDefaultVal(undoWord);
+    if (this.isValidPointerLocation(undoWord)) {
+        const userinputArr = this.userInputRecord[this.recordPointer - defaultVal.adjNum];
+        const todosObj = this.todosRecord[this.recordPointer - defaultVal.adjNum];
         const appWord = userinputArr[0];
         const appParameterArr = userinputArr[1];
-        this.moveRecordPointer('undo');
-        this.runRecord('stop');
+        this.moveRecordPointer(undoWord);
+        if (undoWord === 'undo') { this.runRecord('stop'); }
         switch (appWord) {
-            case 'add':
+            case defaultVal.add:
                 this.delete(todosObj.id);
                 return `'${todosObj.id}번, ${todosObj.name}' 항목이 todo에서 삭제되었습니다.`
-            case 'delete':
+            case defaultVal.delete:
                 this._data.push(todosObj);
                 return `'${todosObj.id}번, ${todosObj.name}' 항목이 삭제에서 todo상태로 되었습니다.`
             case 'update':
@@ -167,30 +182,8 @@ Todos.prototype.undo = function () {
                 this.update(...appParameterArr);
                 return `'${todosObj.id}번, ${todosObj.name}' 항목이 ${todosObj.status}에서 ${originalStatus}상태로 되었습니다.`
         }
-    } else { return 'undo할 항목이 없습니다.' }
-};
-
-Todos.prototype.redo = function () {
-    if (this.isValidPointerLocation('redo')) {
-        const userinputArr = this.userInputRecord[this.recordPointer - 1];
-        const todosObj = this.todosRecord[this.recordPointer - 1];
-        const appWord = userinputArr[0];
-        const appParameterArr = userinputArr[1];
-        this.moveRecordPointer('redo');
-        switch (appWord) {
-            case 'add':
-                this._data.push(todosObj);
-                return `'${todosObj.id}번, ${todosObj.name}' 항목이 삭제에서 todo상태로 되었습니다.`
-            case 'delete':
-                this.delete(todosObj.id)
-                return `'${todosObj.id}번, ${todosObj.name}' 항목이 todo에서 삭제되었습니다.`
-            case 'update':
-                const originalStatus = appParameterArr[2];
-                this.update(...appParameterArr)
-                return `'${todosObj.id}번, ${todosObj.name}' 항목이 ${originalStatus}에서 ${todosObj.status}상태로 되었습니다.`
-        }
     } else {
-        return 'redo할 항목이 없습니다.'
+        return `${undoWord}할 항목이 없습니다.`
     }
 };
 

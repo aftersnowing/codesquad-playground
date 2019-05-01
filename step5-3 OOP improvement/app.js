@@ -43,11 +43,16 @@ rl.on('line', (userInput) => {
             if (errorMessage) {
                 console.log(errorMessage);
                 return rl.prompt()
-            } 
-            const splitedInput = userInput.split('$');
-            const appWord = splitedInput.splice(0, 1)[0];
+            }
+            let splitedInput = userInput.split('$');
+            let appWord = splitedInput.splice(0, 1)[0];
+            if (appWord === 'undo' || appWord === 'redo') {
+                splitedInput = [appWord];
+                appWord = 'restoreTodos';
+            } else {
+                todos.runRecord('start');
+            }
             const resultMessage = todos[appWord](...splitedInput);
-            if (appWord !== 'undo' && appWord !== 'redo') { todos.runRecord('start'); }
                 promptResult(resultMessage, appWord)
                 .then((resultOfTodos) => {
                     console.log(resultOfTodos);
