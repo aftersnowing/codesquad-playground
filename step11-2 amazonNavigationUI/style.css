@@ -37,8 +37,7 @@ body {
 }
 
 .navigation-bar > div:hover {
-  width: 240px;
-  height: 100px;
+  transform: scale(1.1, 1.2);
 }
 
 .header-section div > p {
