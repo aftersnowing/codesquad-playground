@@ -64,7 +64,6 @@ body {
 }
 .content-wrapper {
   display: flex;
-  transition: 400ms ease-out;
 }
 .main-content {
   width: 900px;
@@ -104,6 +103,7 @@ body {
 .left-arrow img,
 .right-arrow img {
   width: 50px;
+  cursor: pointer;
 }
 
 .left-arrow img {

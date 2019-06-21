@@ -73,23 +73,23 @@ early access to Lightning Deals</li>`
   }
 ];
 
-class MainContent {
+class Carousel {
   constructor(data) {
     this.data = data;
-    this.position = 0;
+    this.display = document.querySelector(".content-section");
     this.wrapper = document.querySelector(".content-wrapper");
-    this.arrows = document.querySelectorAll(".right-arrow, .left-arrow");
+    this.rightArrow = document.querySelector(".right-arrow");
+    this.leftArrow = document.querySelector(".left-arrow");
     this.navBar = document.querySelector(".navigation-bar");
-    this.item = document.querySelector(".content-section");
-  }
-  // wrapper 상위 엘리먼트 불러오기
-  // 컨텐츠 엘리먼트 가로, 세로 넓이 불러오기
-  // css 이동 속성 만들기 (transform, translate: 이동)
-  init() {
-    this.generateElement(this.data);
+    this.offset = 0;
+    this.isTransiting = false;
+
+    this.initElement(this.data);
+    this.init();
     this.registerEvent();
   }
-  generateElement(data) {
+
+  initElement(data) {
     for (let i = 0; i < data.length; i++) {
       let templete = `
                 <div class="main-content" data-index="${i}">
@@ -105,35 +105,66 @@ class MainContent {
                 `;
       this.wrapper.insertAdjacentHTML("beforeend", templete);
     }
-    this.position = -900;
-    this.wrapper.style.transform = `translate3d(${this.position}px, 0, 0)`;
+  }
+
+  init() {
+    this.item = document.querySelector(".main-content");
+    this.items = document.querySelectorAll(".main-content");
+    this.itemWidth = this.item.offsetWidth;
+    this.offset = -this.itemWidth;
+    this.wrapper.style.transform = `translate3d(${this.offset}px, 0, 0)`;
   }
 
   registerEvent() {
-    this.arrows[1].addEventListener("click", this.carouselArrow.bind(this));
-    this.arrows[0].addEventListener("click", this.carouselArrow.bind(this));
-    this.navBar.addEventListener("click", this.carouselNavbar.bind(this));
+    this.rightArrow.addEventListener("click", this.moveToNext.bind(this));
+    this.leftArrow.addEventListener("click", this.moveToPrev.bind(this));
+    this.navBar.addEventListener("click", this.navigateItem.bind(this));
+    this.wrapper.addEventListener("transitionend", () => (this.isTransiting = false));
   }
 
-  carouselArrow(event) {
-    const arrow = event.target.parentNode.className[0];
-    if (
-      (this.position < 0 && arrow === "l") ||
-      (this.position > -3600 && arrow === "r")
-    ) {
-      arrow === "r" ? (this.position -= 900) : (this.position += 900);
-      return (this.wrapper.style.transform = `translate3d(${
-        this.position
-      }px, 0, 0)`);
+  moveToPrev() {
+    if (!this.isTransiting) {
+      if (this.offset < this.itemWidth * 0) {
+        this.offset += this.itemWidth;
+        this.move();
+      }
+      if (this.offset === this.itemWidth * 0) {
+        this.offset = -this.itemWidth * 4;
+        setTimeout(() => this.moveWithoutTransition(), 400);
+      }
     }
   }
 
-  carouselNavbar(event) {
+  moveToNext() {
+    if (!this.isTransiting) {
+      if (this.offset > -this.itemWidth * 5) {
+        this.offset -= this.itemWidth;
+        this.move();
+      }
+      if (this.offset === -this.itemWidth * 5) {
+        this.offset = -this.itemWidth * 1;
+        setTimeout(() => this.moveWithoutTransition(), 400);
+      }
+    }
+  }
+
+  move() {
+    this.isTransiting = true;
+    this.wrapper.style.transition = `400ms ease-out`;
+    this.wrapper.style.transform = `translate3d(${this.offset}px, 0, 0)`;
+  }
+
+  moveWithoutTransition() {
+    this.wrapper.style.transition = "none";
+    this.wrapper.style.transform = `translate3d(${this.offset}px, 0, 0)`;
+  }
+
+  navigateItem(event) {
     const menuIndex = event.target.getAttribute("data-index");
-    this.position = -900 * (parseInt(menuIndex) + 1);
-    this.wrapper.style.transform = `translate3d(${this.position}px, 0, 0)`;
+    this.offset = -this.itemWidth * parseInt(menuIndex);
+    this.move();
+    this.isTransiting = false;
   }
 }
 
-const content = new MainContent(data);
-content.init();
+const content = new Carousel(data);
