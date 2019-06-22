@@ -84,9 +84,7 @@ class Carousel {
     this.offset = 0;
     this.isTransiting = false;
 
-    this.initElement(this.data);
     this.init();
-    this.registerEvent();
   }
 
   initElement(data) {
@@ -108,6 +106,8 @@ class Carousel {
   }
 
   init() {
+    this.initElement(this.data);
+    this.registerEvent();
     this.item = document.querySelector(".main-content");
     this.items = document.querySelectorAll(".main-content");
     this.itemWidth = this.item.offsetWidth;
